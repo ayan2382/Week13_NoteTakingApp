@@ -1,25 +1,61 @@
-// TODO: Import useForm, zodResolver, axios, useNavigate, useState, and noteSchema
-
-
 import { Save } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { noteSchema } from "../schema/noteSchema";
 
 const CreateNoteForm = () => {
-  // TODO: Setup isSubmitting state with useState
-  // TODO: create navigate variable and set to useNavigate()
-
-
-  // TODO: Set up the form with useForm from react-hook-form and zodResolver from @hookform/resolvers/zod
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(noteSchema),
+  });
 
   const sendToTheServer = async (data) => {
-    // TODO: Send the data to the server
-    // TODO: Use axios to create a new note in the server using the endpoint http://localhost:3001/api/notes
+    setIsSubmitting(true);
+    try {
+      await axios.post('http://localhost:3001/api/notes', data);
+      navigate('/notes');
+    } catch (error) {
+      console.error('Error creating note:', error);
+      alert('Failed to create note. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <>
-    <h1>Create Note</h1>
-    {/* TODO: Setup the form with TailwindCSS, create a form with the following fields: title, content, and submit button */}
-    </>
+    <div>
+      <h1>Create Note</h1>
+      <form onSubmit={handleSubmit(sendToTheServer)}>
+        <input
+          type="text"
+          placeholder="Title"
+          {...register("title")}
+          className="border p-2 w-full mb-2"
+        />
+        {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+
+        <textarea
+          placeholder="Content"
+          rows="5"
+          {...register("content")}
+          className="border p-2 w-full mb-2"
+        />
+        {errors.content && <p className="text-red-500">{errors.content.message}</p>}
+
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-blue-600 text-white px-4 py-2 flex items-center"
+        >
+          <Save className="w-4 h-4 mr-2" />
+          {isSubmitting ? "Saving..." : "Create"}
+        </button>
+      </form>
+    </div>
   );
 };
 

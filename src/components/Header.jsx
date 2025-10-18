@@ -23,7 +23,7 @@ const Header = () => {
               }`}
             >
               <Plus size={18} />
-              <span>Create</span>
+              <span>Create a New Note</span>
             </Link>
             
             <Link 

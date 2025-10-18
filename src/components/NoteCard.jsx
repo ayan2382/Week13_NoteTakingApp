@@ -7,8 +7,8 @@ const NoteCard = ({ note, onDelete }) => {
     <div
       className="relative"
       style={{
-        filter: "drop-shadow(0 2px 4px #b266ff)", // lighter purple shadow
-        borderRadius: "6px", // less corner radius
+        filter: "drop-shadow(0 2px 4px #b266ff)", 
+        borderRadius: "6px", 
       }}
     >
       <div
@@ -18,7 +18,7 @@ const NoteCard = ({ note, onDelete }) => {
           color: "#111",
           borderRadius: "6px",
           minHeight: "180px",
-          boxShadow: "0 1px 2px rgba(0,0,0,0.06)", // lighter shadow
+          boxShadow: "0 1px 2px rgba(0,0,0,0.06)", 
           fontFamily: "inherit",
           display: "flex",
           flexDirection: "column",
